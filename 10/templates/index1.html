@@ -68,15 +68,15 @@
                 <nav>
                   <ul class="pagination  pagination-sm">
                     <li>
-                      <a href="#" aria-label="Previous">
+                      <a href="#" aria-label="Previous" data-id="0" id="pervious" class="huan">
                         <span aria-hidden="true">&lt;</span>
                       </a>
-                      <a href="#" aria-label="Next">
+                      <a href="#" aria-label="Next" data-id="1" id="next" class="huan">
                         <span aria-hidden="true">&gt;</span>
                       </a>
-                      <a href="#">
+<!--                       <a href="#">
                         <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
-                      </a>
+                      </a> -->
                     </li>
                   </ul>
                 </nav>
@@ -95,7 +95,7 @@
                       <th>操作</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id='table-content'>
                   </tbody>
                 </table>                
             </div>
@@ -122,9 +122,6 @@ var option = {
     toolbox: {
         show : true,
         feature : {
-            // mark : {show: true},
-            // dataView : {show: true, readOnly: false},
-            // magicType : {show: true, type: ['line', 'bar']},
             restore : {show: true},
             saveAsImage : {show: true}
         }
@@ -205,15 +202,26 @@ var option1 = {
         }
     ]
 };
-$.getJSON('/select',function(res1){
-    option1.legend.data=res1.legend_data
-    option1.series[0].data=res1.series_data
+$.getJSON('/select',function(res){
+    option1.legend.data=res.legend_data
+    option1.series[0].data=res.series_data
     myChart1.setOption(option1)
 }) 
+$(document).on("click",".huan",function(){
+    var url='/tupian?data_id='+$(this).attr('data-id')
+    $.getJSON(url,function(res){
+        $('#tupian').html(res)
+    }) 
+})  
 $.getJSON('/tupian',function(res){
-    $('#tupian').html(res)
-})                 
-    
+        $('#tupian').html(res)
+}) 
+
+// function getList(){
+//     $.getJSON('/list',function(str) {
+//             $('#table-content').html(str.tables_str)
+//         })
+// } 
 </script>
 </body>
 </html>

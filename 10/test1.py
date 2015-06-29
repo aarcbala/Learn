@@ -34,13 +34,31 @@ def select():
 	return json.dumps({"legend_data":select_list,"series_data":data_tuple})
 @app.route('/tupian')
 def tupian():
+	tupian_dict={ 
+		"first_id":0,
+		"second_id":1,
+		"tupian_list":[],
+	}
+	data_id = request.args.get('data_id',0)
 	tupian_list=''
-	sql_tupian='select name,path,node_id from tupian order by node_id limit 0,4'
-	cur.execute(sql_tupian)
-	sql_tupian_list=cur.fetchall()
-	for x in sql_tupian_list:
-		tupian_list=tupian_list + '''<div class="col-md-3 tupian"><p>No.%s %s</p><img width="100%%" src="%s"></div>'''  % (x[2],x[0],x[1])
-	print tupian_list
+	if int(data_id)==0:
+		sql_tupian='select namery,pather,node_id from tupian order by node_id limit %s,4'  % (data_id*4)
+		cur.execute(sql_tupian)
+		sql_tupian_list=cur.fetchall()
+		for x in sql_tupian_list:
+			tupian_list=tupian_list + '''<div class="col-md-3 tupian"><p>No.%s %s</p><img width="100%%" src="%s"></div>'''  % (x[2],x[0],x[1])
+		tupian_dict['tupian_list']=tupian_list
+		print tupian_list
+		print data_id
+  	else:
+  		sql_tupian='select namery,pather,node_id from tupian order by node_id limit %s,4' % (int(data_id)*4)
+		cur.execute(sql_tupian)
+		sql_tupian_list=cur.fetchall()
+		for x in sql_tupian_list:
+			tupian_list=tupian_list + '''<div class="col-md-3 tupian"><p>No.%s %s</p><img width="100%%" src="%s"></div>'''  % (x[2],x[0],x[1])
+		tupian_dict['tupian_list']=tupian_list
+		print tupian_list
+		print data_id
 	return json.dumps(tupian_list)
 if __name__ == '__main__':
 	app.run(debug=True)
