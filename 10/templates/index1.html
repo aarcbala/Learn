@@ -208,13 +208,15 @@ $.getJSON('/select',function(res){
     myChart1.setOption(option1)
 }) 
 $(document).on("click",".huan",function(){
-    var url='/tupian?data_id='+$(this).attr('data-id')
+    var url='/tupian?data_id='+$(this).attr('data-id')+'&id='+$(this).attr('id')
     $.getJSON(url,function(res){
-        $('#tupian').html(res)
+        $('#tupian').html(res.tupian_list)
+        $('#pervious').attr('data-id',res.first_id)
+        $('#next').attr('data-id',res.second_id)
     }) 
 })  
 $.getJSON('/tupian',function(res){
-        $('#tupian').html(res)
+        $('#tupian').html(res.tupian_list)
 }) 
 
 // function getList(){
