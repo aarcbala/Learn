@@ -202,6 +202,13 @@ var option1 = {
         }
     ]
 };
+function liebiao(){
+    $.getJSON('/liebiao',function(str){
+        console.log(str)
+        $('#table-content').html(str)
+    })
+}
+liebiao()
 $.getJSON('/select',function(res){
     option1.legend.data=res.legend_data
     option1.series[0].data=res.series_data
@@ -218,7 +225,6 @@ $(document).on("click",".huan",function(){
 $.getJSON('/tupian',function(res){
         $('#tupian').html(res.tupian_list)
 }) 
-
 // function getList(){
 //     $.getJSON('/list',function(str) {
 //             $('#table-content').html(str.tables_str)

@@ -3,7 +3,7 @@ import MySQLdb as mysql
 from flask import Flask,request,render_template
 import json
 app = Flask(__name__)
-con = mysql.connect(user='root',passwd='111111',db='sun',host='localhost')
+con = mysql.connect(user='root',passwd='111111',db='sun',host='localhost',charset='utf8')
 con.autocommit(True)
 cur = con.cursor()
 @app.route('/')
@@ -84,5 +84,18 @@ def tupian():
 			tupian_list=tupian_list + '''<div class="col-md-3 tupian"><p>No.%s %s</p><img width="100%%" src="%s"></div>'''  % (x[2],x[0],x[1])
 		tupian_dict['tupian_list']=tupian_list
 	return json.dumps(tupian_dict)
+@app.route('/liebiao')
+def liebiao():
+	sql_liebiao='select node_id,namery,number,cname,id from tupian order by number desc limit 0,6'
+	cur.execute(sql_liebiao)
+	sql_liebiao_list=''
+	i=1
+	for c in cur.fetchall():
+		sql_liebiao_list=sql_liebiao_list +'''<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>\
+		<button type="button" class="btn  btn-danger delete" data_id="%s" data-target="#delete" data-toggle="modal" >delete</button>\
+		<button type="button" class="btn btn-primary  edit" data-toggle="modal" data-target="#myModal" data_id="%s">edit</button></td></tr>''' % (i,c[1],c[2],c[3],c[4],c[4])
+		i=i+1
+	return json.dumps(sql_liebiao_list)
+
 if __name__ == '__main__':
 	app.run(debug=True)
